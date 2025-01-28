@@ -19,16 +19,15 @@ const rfStyle = {
 };
  
 const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: 'prompt' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: 'open AI' } },
   {
-    id: 'input-1',
+    id: '1',
     type: 'textUpdater',
     position: { x: 0, y: 0 },
     data: { value: 123 },
-  }
+  },
+  { id: '2', position: { x: 0, y: 100 }, data: { label: 'open AI' } }
 ];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' },{id:'e2',source:'input-1',target:'1'}];
+const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
  
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);

@@ -24,16 +24,9 @@ function TextUpdaterNode({ data, isConnectable }) {
         isConnectable={isConnectable}
       />
       <div>
-        <label htmlFor="text">Text:</label>
-        <input id="text" name="text" onChange={onChange} className="nodrag" />
+        <label htmlFor="text">Prompt:</label>
+        <input id="text" name="prompt:" onChange={onChange} className="nodrag" />
       </div>
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="a"
-        style={handleStyle}
-        isConnectable={isConnectable}
-      />
       <Handle
         type="source"
         position={Position.Bottom}
