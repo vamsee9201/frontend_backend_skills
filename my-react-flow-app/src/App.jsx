@@ -29,6 +29,14 @@ const initialNodes = [
 ];
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
  
+function MyButton() {
+  return (
+    <button onClick={() => alert("Button Clicked!")}>
+      Click Me
+    </button>
+  );
+}
+
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -54,6 +62,20 @@ export default function App() {
         <Background variant="dots" gap={12} size={1} />
         
       </ReactFlow>
+      <button 
+        onClick={() => alert("Button Clicked!")} 
+        style={{
+          position: 'absolute', 
+          bottom: '20px', 
+          right: '1000px', 
+          padding: '10px 20px', 
+          backgroundColor: '#000000', 
+          color: 'white', 
+          borderRadius: '5px',
+        }}
+      >
+        Click Me
+      </button>
     </div>
   );
 }
