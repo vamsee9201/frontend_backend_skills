@@ -18,12 +18,15 @@ const rfStyle = {
   backgroundColor: '#B8CEFF',
 };
  
+function onChange() {
+  console.log("changed")
+}
 const initialNodes = [
   {
     id: '1',
     type: 'textUpdater',
     position: { x: 0, y: 0 },
-    data: { value: 123 },
+    data: { onChange:onChange },
   },
   { id: '2', position: { x: 0, y: 100 }, data: { label: 'open AI' } }
 ];
@@ -45,6 +48,8 @@ export default function App() {
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
   );
+
+  
  
   return (
     <div style={{ width: '100vw', height: '100vh' ,backgroundColor: "#f9f9f9",}}>

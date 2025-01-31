@@ -25,7 +25,7 @@ function TextUpdaterNode({ data, isConnectable }) {
       />
       <div>
         <label htmlFor="text">Prompt:</label>
-        <input id="text" name="prompt:" onChange={onChange} className="nodrag" />
+        <input id="text" name="prompt:" onChange={data.onChange} className="nodrag" />
       </div>
       <Handle
         type="source"
