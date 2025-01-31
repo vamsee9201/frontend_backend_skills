@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ReactFlow,
   MiniMap,
@@ -12,14 +12,17 @@ import {
 import '@xyflow/react/dist/style.css';
 import TextUpdaterNode from './TextUpdaterNode';
 
-const nodeTypes = { textUpdater: TextUpdaterNode };
+
+
+export default function App() {
+  const nodeTypes = { textUpdater: TextUpdaterNode };
 
 const rfStyle = {
   backgroundColor: '#B8CEFF',
 };
  
-function onChange() {
-  console.log("changed")
+function onChange(event) {
+  setPrompt(event.target.value)
 }
 const initialNodes = [
   {
@@ -40,9 +43,11 @@ function MyButton() {
   );
 }
 
-export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [prompt,setPrompt] = useState("");
+
+
  
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -68,7 +73,7 @@ export default function App() {
         
       </ReactFlow>
       <button 
-        onClick={() => alert("Button Clicked!")} 
+        onClick={() => console.log(prompt)} 
         style={{
           position: 'absolute', 
           bottom: '20px', 
