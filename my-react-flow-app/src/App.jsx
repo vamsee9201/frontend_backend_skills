@@ -1,4 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+//import OpenAI from "openai";
+//import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
+import openai_api from "./openai_api.json";
+
+
+
 import {
   ReactFlow,
   MiniMap,
@@ -11,37 +18,44 @@ import {
  
 import '@xyflow/react/dist/style.css';
 import TextUpdaterNode from './TextUpdaterNode';
+import TextDisplayNode from './TextDisplayNode';
 
 
 
 export default function App() {
-  const nodeTypes = { textUpdater: TextUpdaterNode };
+  const nodeTypes = { textUpdater: TextUpdaterNode , textDisplay: TextDisplayNode};
 
-const rfStyle = {
-  backgroundColor: '#B8CEFF',
-};
- 
-function onChange(event) {
-  setPrompt(event.target.value)
-}
-const initialNodes = [
-  {
-    id: '1',
-    type: 'textUpdater',
-    position: { x: 0, y: 0 },
-    data: { onChange:onChange },
-  },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: 'open AI' } }
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
- 
-function MyButton() {
-  return (
-    <button onClick={() => alert("Button Clicked!")}>
-      Click Me
-    </button>
-  );
-}
+  const rfStyle = {
+    backgroundColor: '#B8CEFF',
+  };
+  
+  function onChange(event) {
+    setPrompt(event.target.value)
+  }
+  const initialNodes = [
+    {
+      id: '1',
+      type: 'textUpdater',
+      position: { x: 0, y: 0 },
+      data: { onChange:onChange },
+    },
+    { id: '2', position: { x: 0, y: 100 }, data: { label: 'open AI' } },
+    {
+      id:'3',
+      type:'textDisplay',
+      position: {x:0,y:0},
+      data:{output:"no output"}
+    }
+  ];
+  const initialEdges = [{ id: 'e1', source: '1', target: '2' },{id: 'e2', source: '2', target: '3'}];
+  
+  function MyButton() {
+    return (
+      <button onClick={() => alert("Button Clicked!")}>
+        Click Me
+      </button>
+    );
+  }
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -53,6 +67,40 @@ function MyButton() {
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
   );
+
+  
+
+
+
+
+
+  const updateOutput = async () => {
+    //console.log(openai_api.key)
+    const openai = new OpenAI({
+      apiKey: openai_api.key,
+      dangerouslyAllowBrowser: true
+    });
+    
+    async function get_answer() {
+      const completion = await openai.chat.completions.create({
+        messages: [{ role: "user", content: prompt }],
+        model: "gpt-4o",
+        store: true,
+      });
+      console.log(completion);
+      return completion.choices[0].message.content;
+    }
+    const answer = await get_answer();
+    //console.log(completion)
+    console.log(answer)
+    const updatedNodes = nodes.slice();
+    console.log(prompt);
+    updatedNodes[2]["data"]["output"] = answer;
+    console.log("got updated nodes");
+    setNodes(updatedNodes);
+  };
+  
+
 
   
  
@@ -73,7 +121,7 @@ function MyButton() {
         
       </ReactFlow>
       <button 
-        onClick={() => console.log(prompt)} 
+        onClick={updateOutput} 
         style={{
           position: 'absolute', 
           bottom: '20px', 
